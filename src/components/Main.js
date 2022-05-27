@@ -5,15 +5,22 @@ import { FaRedoAlt } from 'react-icons/fa'
 
 function Main() {
 
+    const [safemode, setSafemode] = useState(true)
     const [joke, setJoke] = useState({})
     const [fetch, setFetch] = useState(true)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL)
-            .then(res => setJoke(res.data))
-            .catch(error => { setError(error.message) })
-    }, [fetch]);
+        if (!safemode) {
+            axios.get(process.env.REACT_APP_API_URL)
+                .then(res => setJoke(res.data))
+                .catch(error => { setError(error.message) })
+        } else {
+            axios.get(process.env.REACT_APP_API_URL_SAFE)
+                .then(res => setJoke(res.data))
+                .catch(error => { setError(error.message) })
+        }
+    }, [fetch, safemode]);
 
     const handleClick = () => {
         setFetch(prevState => !prevState)
@@ -42,12 +49,22 @@ function Main() {
                         </h1>
                         : ''}
                 </div>
-                <div className='flex justify-end items-center space-x-4'>
-                    <p className='font-bold'><span >Type:</span> {joke.type}</p>
-                    <p className='font-bold'><span >Category:</span> {joke.category}</p>
-                    <button className="btn btn-square btn-outline btn-accent" onClick={handleClick}>
-                        <FaRedoAlt />
-                    </button>
+                <div className='flex justify-between items-center space-x-4'>
+                    <div>
+                        <p className='font-bold'><span >Type:</span> {joke.type}</p>
+                        <p className='font-bold'><span >Category:</span> {joke.category}</p>
+                    </div>
+                    <div className='flex justify-end items-center space-x-4'>
+                        <div class="form-control">
+                            <label class="label cursor-pointer space-x-2">
+                                <span class="label-text font-semibold text-xl">Safe Mode🔞</span>
+                                <input type="checkbox" class="toggle toggle-accent" />
+                            </label>
+                        </div>
+                        <button className="btn btn-square btn-outline btn-accent" onClick={handleClick}>
+                            <FaRedoAlt />
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
