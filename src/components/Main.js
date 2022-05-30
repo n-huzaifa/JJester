@@ -26,6 +26,10 @@ function Main() {
         setFetch(prevState => !prevState)
     }
 
+    const handleChange = () => {
+        setSafemode(prevState => !prevState)
+    }
+
     return (
         <section>
             <div className="font-Outfit px-4 py-12 mx-auto max-w-7xl sm:px-6 md:px-12 lg:px-24 lg:py-24">
@@ -55,10 +59,19 @@ function Main() {
                         <p className='font-bold'><span >Category:</span> {joke.category}</p>
                     </div>
                     <div className='flex justify-end items-center space-x-4'>
-                        <div class="form-control">
-                            <label class="label cursor-pointer space-x-2">
-                                <span class="label-text font-semibold text-xl">Safe Mode🔞</span>
-                                <input type="checkbox" class="toggle toggle-accent" />
+                        <div className="form-control">
+                            <label className="label cursor-pointer space-x-2">
+                                {safemode ?
+                                    <>
+                                        <span className="label-text font-semibold text-xl">Safe Mode🥳 </span>
+                                        <input type="checkbox" className="toggle toggle-accent" onChange={handleChange} checked />
+                                    </>
+                                    :
+                                    <>
+                                        <span className="label-text font-semibold text-xl">Safe Mode🔞</span>
+                                        <input type="checkbox" className="toggle toggle-accent" onChange={handleChange} />
+                                    </>
+                                }
                             </label>
                         </div>
                         <button className="btn btn-square btn-outline btn-accent" onClick={handleClick}>
